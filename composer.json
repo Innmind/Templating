@@ -20,7 +20,8 @@
         "innmind/stream": "^1.4",
         "innmind/filesystem": "^3.2",
         "twig/twig": "^2.5",
-        "innmind/url": "^2.0"
+        "innmind/url": "^2.0",
+        "innmind/compose": "^1.7"
     },
     "autoload": {
         "psr-4": {
