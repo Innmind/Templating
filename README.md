@@ -17,19 +17,14 @@ composer require innmind/templating
 ## Usage
 
 ```php
-use Innmind\Compose\ContainerBuilder\ContainerBuilder;
-use Innmind\Url\Path;
-use Innmind\Immutable\Map;
+use function Innmind\Templating\bootstrap;
 use Innmind\Templating\Name;
+use Innmind\Url\Path;
 
-$container = (new ContainerBuilder)(
-    new Path('container.yml'),
-    (new Map('string', 'mixed'))
-        ->put('templates', new Path('templates/dir'))
-        ->put('cache', new Path('/tmp/cache')) // optional
-        ->put('helpers', new Map('string', 'object')) // optional, variables accesible everywhere in templates
+$render = bootstrap(
+    new Path('templates/dir'),
+    new Path('/tmp/cache'), // optional
+    new Map('string', 'object') // optional, variables accesible everywhere in templates
 );
-
-$render = $container->get('engine');
 $rendered = $render(new Name('template.html.twig')); // Instance of Innmind\Stream\Readable
 ```
