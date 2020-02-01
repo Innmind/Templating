@@ -18,14 +18,14 @@ use Twig\{
 
 final class Twig implements Engine
 {
-    private $twig;
+    private Environment $twig;
 
     public function __construct(
         PathInterface $templates,
         PathInterface $cache = null,
         MapInterface $helpers = null
     ) {
-        $helpers = $helpers ?? new Map('string', 'object');
+        $helpers ??= new Map('string', 'object');
 
         if (
             (string) $helpers->keyType() !== 'string' ||
@@ -52,7 +52,7 @@ final class Twig implements Engine
      */
     public function __invoke(Name $template, MapInterface $parameters = null): Readable
     {
-        $parameters = $parameters ?? new Map('string', 'mixed');
+        $parameters ??= new Map('string', 'mixed');
 
         if (
             (string) $parameters->keyType() !== 'string' ||
