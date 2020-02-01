@@ -21,9 +21,9 @@ use Innmind\Templating\Name;
 use Innmind\Url\Path;
 
 $render = bootstrap(
-    new Path('templates/dir'),
-    new Path('/tmp/cache'), // optional
-    new Map('string', 'object') // optional, variables accesible everywhere in templates
+    Path::of('templates/dir'),
+    Path::of('/tmp/cache'), // optional
+    Map::of('string', 'object'), // optional, variables accesible everywhere in templates
 );
 $rendered = $render(new Name('template.html.twig')); // Instance of Innmind\Stream\Readable
 ```
