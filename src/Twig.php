@@ -4,75 +4,65 @@ declare(strict_types = 1);
 namespace Innmind\Templating;
 
 use Innmind\Templating\Exception\FailedToRenderTemplate;
-use Innmind\Url\PathInterface;
+use Innmind\Url\Path;
 use Innmind\Stream\Readable;
-use Innmind\Filesystem\Stream\StringStream;
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
+use Innmind\Stream\Readable\Stream;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\assertMap;
+use Twig\{
+    Environment,
+    Loader\FilesystemLoader,
 };
 
 final class Twig implements Engine
 {
-    private $twig;
+    private Environment $twig;
 
     public function __construct(
-        PathInterface $templates,
-        PathInterface $cache = null,
-        MapInterface $helpers = null
+        Path $templates,
+        Path $cache = null,
+        Map $helpers = null
     ) {
-        $helpers = $helpers ?? new Map('string', 'object');
+        $helpers ??= Map::of('string', 'object');
 
-        if (
-            (string) $helpers->keyType() !== 'string' ||
-            (string) $helpers->valueType() !== 'object'
-        ) {
-            throw new \TypeError('Argument 3 must be of type MapInterface<string, object>');
-        }
+        assertMap('string', 'object', $helpers, 3);
 
-        $this->twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem((string) $templates),
+        $this->twig = new Environment(
+            new FilesystemLoader($templates->toString()),
             [
-                'cache' => $cache ? (string) $cache : false,
+                'cache' => $cache ? $cache->toString() : false,
                 'auto_reload' => is_null($cache),
                 'strict_variables' => true,
-            ]
+            ],
         );
         $helpers->foreach(function(string $name, $helper): void {
             $this->twig->addGlobal($name, $helper);
         });
     }
 
-    /**
-     * {@inheritdo}
-     */
-    public function __invoke(Name $template, MapInterface $parameters = null): Readable
+    public function __invoke(Name $template, Map $parameters = null): Readable
     {
-        $parameters = $parameters ?? new Map('string', 'mixed');
+        $parameters ??= Map::of('string', 'mixed');
 
-        if (
-            (string) $parameters->keyType() !== 'string' ||
-            (string) $parameters->valueType() !== 'mixed'
-        ) {
-            throw new \TypeError('Argument 2 must be of type MapInterface<string, mixed>');
-        }
+        assertMap('string', 'mixed', $parameters, 2);
 
         try {
-            return new StringStream(
+            return Stream::ofContent(
                 $this->twig->render(
-                    (string) $template,
+                    $template->toString(),
                     $parameters->reduce(
                         [],
                         static function(array $parameters, string $key, $value): array {
+                            /** @psalm-suppress MixedAssignment */
                             $parameters[$key] = $value;
 
                             return $parameters;
-                        }
-                    )
-                )
+                        },
+                    ),
+                ),
             );
         } catch (\Throwable $e) {
-            throw new FailedToRenderTemplate((string) $template, 0, $e);
+            throw new FailedToRenderTemplate($template->toString(), 0, $e);
         }
     }
 }

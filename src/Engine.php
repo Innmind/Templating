@@ -4,12 +4,12 @@ declare(strict_types = 1);
 namespace Innmind\Templating;
 
 use Innmind\Stream\Readable;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
 
 interface Engine
 {
     /**
-     * @param MapInterface<string, mixed> $parameters
+     * @param Map<string, mixed> $parameters
      */
-    public function __invoke(Name $template, MapInterface $parameters = null): Readable;
+    public function __invoke(Name $template, Map $parameters = null): Readable;
 }

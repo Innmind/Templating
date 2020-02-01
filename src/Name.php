@@ -8,7 +8,7 @@ use Innmind\Immutable\Str;
 
 final class Name
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
@@ -21,10 +21,10 @@ final class Name
 
     public function extension(): string
     {
-        return pathinfo($this->value, PATHINFO_EXTENSION);
+        return \pathinfo($this->value, \PATHINFO_EXTENSION);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

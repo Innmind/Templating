@@ -3,20 +3,16 @@ declare(strict_types = 1);
 
 namespace Innmind\Templating;
 
-use Innmind\Url\PathInterface;
-use Innmind\Immutable\MapInterface;
+use Innmind\Url\Path;
+use Innmind\Immutable\Map;
 
 /**
- * @param MapInterface<string, object>|null  $helpers
+ * @param Map<string, object>|null  $helpers
  */
 function bootstrap(
-    PathInterface $templates,
-    PathInterface $cache = null,
-    MapInterface $helpers = null
+    Path $templates,
+    Path $cache = null,
+    Map $helpers = null
 ): Engine {
-    return new Twig(
-        $templates,
-        $cache,
-        $helpers
-    );
+    return new Twig($templates, $cache, $helpers);
 }
