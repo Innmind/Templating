@@ -33,7 +33,7 @@ final class Twig implements Engine
                 'cache' => $cache ? $cache->toString() : false,
                 'auto_reload' => is_null($cache),
                 'strict_variables' => true,
-            ]
+            ],
         );
         $helpers->foreach(function(string $name, $helper): void {
             $this->twig->addGlobal($name, $helper);
@@ -57,9 +57,9 @@ final class Twig implements Engine
                             $parameters[$key] = $value;
 
                             return $parameters;
-                        }
-                    )
-                )
+                        },
+                    ),
+                ),
             );
         } catch (\Throwable $e) {
             throw new FailedToRenderTemplate((string) $template, 0, $e);

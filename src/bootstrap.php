@@ -14,9 +14,5 @@ function bootstrap(
     Path $cache = null,
     Map $helpers = null
 ): Engine {
-    return new Twig(
-        $templates,
-        $cache,
-        $helpers
-    );
+    return new Twig($templates, $cache, $helpers);
 }

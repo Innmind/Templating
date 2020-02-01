@@ -21,7 +21,7 @@ final class Name
 
     public function extension(): string
     {
-        return pathinfo($this->value, PATHINFO_EXTENSION);
+        return \pathinfo($this->value, \PATHINFO_EXTENSION);
     }
 
     public function __toString(): string
