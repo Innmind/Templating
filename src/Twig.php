@@ -49,7 +49,7 @@ final class Twig implements Engine
         try {
             return Stream::ofContent(
                 $this->twig->render(
-                    (string) $template,
+                    $template->toString(),
                     $parameters->reduce(
                         [],
                         static function(array $parameters, string $key, $value): array {
@@ -62,7 +62,7 @@ final class Twig implements Engine
                 ),
             );
         } catch (\Throwable $e) {
-            throw new FailedToRenderTemplate((string) $template, 0, $e);
+            throw new FailedToRenderTemplate($template->toString(), 0, $e);
         }
     }
 }

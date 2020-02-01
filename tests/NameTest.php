@@ -16,7 +16,7 @@ class NameTest extends TestCase
         $name = new Name('templates/template.html.twig');
 
         $this->assertSame('twig', $name->extension());
-        $this->assertSame('templates/template.html.twig', (string) $name);
+        $this->assertSame('templates/template.html.twig', $name->toString());
     }
 
     public function testThrowWhenEmptyName()
