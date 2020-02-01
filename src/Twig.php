@@ -11,6 +11,10 @@ use Innmind\Immutable\{
     MapInterface,
     Map,
 };
+use Twig\{
+    Environment,
+    Loader\FilesystemLoader,
+};
 
 final class Twig implements Engine
 {
@@ -30,8 +34,8 @@ final class Twig implements Engine
             throw new \TypeError('Argument 3 must be of type MapInterface<string, object>');
         }
 
-        $this->twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem((string) $templates),
+        $this->twig = new Environment(
+            new FilesystemLoader((string) $templates),
             [
                 'cache' => $cache ? (string) $cache : false,
                 'auto_reload' => is_null($cache),
