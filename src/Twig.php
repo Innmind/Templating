@@ -53,6 +53,7 @@ final class Twig implements Engine
                     $parameters->reduce(
                         [],
                         static function(array $parameters, string $key, $value): array {
+                            /** @psalm-suppress MixedAssignment */
                             $parameters[$key] = $value;
 
                             return $parameters;
