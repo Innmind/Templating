@@ -14,7 +14,7 @@ class BootstrapTest extends TestCase
     {
         $this->assertInstanceOf(
             Twig::class,
-            bootstrap(new Path('fixtures'))
+            bootstrap(Path::of('fixtures'))
         );
     }
 }

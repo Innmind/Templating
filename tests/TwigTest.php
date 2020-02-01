@@ -20,31 +20,31 @@ class TwigTest extends TestCase
     {
         $this->assertInstanceOf(
             Engine::class,
-            new Twig(new Path('/tmp'))
+            new Twig(Path::of('/tmp'))
         );
     }
 
     public function testThrowWhenInvalidHelpersKey()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, object>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, object>');
 
         new Twig(
-            new Path('/tmp'),
+            Path::of('/tmp'),
             null,
-            new Map('int', 'object')
+            Map::of('int', 'object')
         );
     }
 
     public function testThrowWhenInvalidHelpersValue()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, object>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, object>');
 
         new Twig(
-            new Path('/tmp'),
+            Path::of('/tmp'),
             null,
-            new Map('string', 'mixed')
+            Map::of('string', 'mixed')
         );
     }
 
@@ -54,49 +54,49 @@ class TwigTest extends TestCase
         $helper->name = 'default';
 
         $render = new Twig(
-            new Path('fixtures'),
-            new Path('/tmp/twig'),
-            (new Map('string', 'object'))
-                ->put('helper', $helper)
+            Path::of('fixtures'),
+            Path::of('/tmp/twig'),
+            Map::of('string', 'object')
+                ('helper', $helper)
         );
 
         $stream = $render(new Name('template.html.twig'));
 
         $this->assertInstanceOf(Readable::class, $stream);
-        $this->assertSame('Hello default', trim((string) $stream));
+        $this->assertSame('Hello default', trim($stream->toString()));
 
         $stream = $render(
             new Name('template.html.twig'),
-            (new Map('string', 'mixed'))
-                ->put('name', 'world')
+            Map::of('string', 'mixed')
+                ('name', 'world')
         );
 
-        $this->assertSame('Hello world', trim((string) $stream));
+        $this->assertSame('Hello world', trim($stream->toString()));
     }
 
     public function testThrowWhenInvalidParametersKey()
     {
-        $render = new Twig(new Path('fixtures'));
+        $render = new Twig(Path::of('fixtures'));
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, mixed>');
+        $this->expectExceptionMessage('Argument 2 must be of type Map<string, mixed>');
 
-        $render(new Name('template.html.twig'), new Map('int', 'mixed'));
+        $render(new Name('template.html.twig'), Map::of('int', 'mixed'));
     }
 
     public function testThrowWhenInvalidParametersValue()
     {
-        $render = new Twig(new Path('fixtures'));
+        $render = new Twig(Path::of('fixtures'));
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, mixed>');
+        $this->expectExceptionMessage('Argument 2 must be of type Map<string, mixed>');
 
-        $render(new Name('template.html.twig'), new Map('string', 'variable'));
+        $render(new Name('template.html.twig'), Map::of('string', 'variable'));
     }
 
     public function testThrowWhenFailingToRenderTemplate()
     {
-        $render = new Twig(new Path('fixtures'));
+        $render = new Twig(Path::of('fixtures'));
 
         $this->expectException(FailedToRenderTemplate::class);
         $this->expectExceptionMessage('unknown.html.twig');
