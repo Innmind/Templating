@@ -18,11 +18,15 @@ final class Twig implements Engine
 {
     private Environment $twig;
 
+    /**
+     * @param Map<string, object>|null $helpers
+     */
     public function __construct(
         Path $templates,
         Path $cache = null,
         Map $helpers = null
     ) {
+        /** @var Map<string, object> */
         $helpers ??= Map::of('string', 'object');
 
         assertMap('string', 'object', $helpers, 3);
