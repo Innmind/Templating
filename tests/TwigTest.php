@@ -63,7 +63,7 @@ class TwigTest extends TestCase
         $stream = $render(new Name('template.html.twig'));
 
         $this->assertInstanceOf(Readable::class, $stream);
-        $this->assertSame('Hello default', trim($stream->toString()));
+        $this->assertSame('Hello default', \trim($stream->toString()));
 
         $stream = $render(
             new Name('template.html.twig'),
@@ -71,7 +71,7 @@ class TwigTest extends TestCase
                 ('name', 'world')
         );
 
-        $this->assertSame('Hello world', trim($stream->toString()));
+        $this->assertSame('Hello world', \trim($stream->toString()));
     }
 
     public function testThrowWhenInvalidParametersKey()

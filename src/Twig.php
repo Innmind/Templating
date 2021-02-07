@@ -35,7 +35,7 @@ final class Twig implements Engine
             new FilesystemLoader($templates->toString()),
             [
                 'cache' => $cache ? $cache->toString() : false,
-                'auto_reload' => is_null($cache),
+                'auto_reload' => \is_null($cache),
                 'strict_variables' => true,
             ],
         );
