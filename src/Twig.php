@@ -18,11 +18,15 @@ final class Twig implements Engine
 {
     private Environment $twig;
 
+    /**
+     * @param Map<string, object>|null $helpers
+     */
     public function __construct(
         Path $templates,
         Path $cache = null,
         Map $helpers = null
     ) {
+        /** @var Map<string, object> */
         $helpers ??= Map::of('string', 'object');
 
         assertMap('string', 'object', $helpers, 3);
@@ -31,7 +35,7 @@ final class Twig implements Engine
             new FilesystemLoader($templates->toString()),
             [
                 'cache' => $cache ? $cache->toString() : false,
-                'auto_reload' => is_null($cache),
+                'auto_reload' => \is_null($cache),
                 'strict_variables' => true,
             ],
         );
@@ -53,7 +57,10 @@ final class Twig implements Engine
                     $parameters->reduce(
                         [],
                         static function(array $parameters, string $key, $value): array {
-                            /** @psalm-suppress MixedAssignment */
+                            /**
+                             * @psalm-suppress MixedAssignment
+                             * @psalm-suppress InvalidArrayOffset
+                             */
                             $parameters[$key] = $value;
 
                             return $parameters;

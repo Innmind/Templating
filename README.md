@@ -1,9 +1,8 @@
 # Templating
 
-| `develop` |
-|-----------|
-| [![codecov](https://codecov.io/gh/Innmind/Templating/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/Templating) |
-| [![Build Status](https://github.com/Innmind/Templating/workflows/CI/badge.svg)](https://github.com/Innmind/Templating/actions?query=workflow%3ACI) |
+[![Build Status](https://github.com/innmind/templating/workflows/CI/badge.svg?branch=master)](https://github.com/innmind/templating/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/innmind/templating/branch/develop/graph/badge.svg)](https://codecov.io/gh/innmind/templating)
+[![Type Coverage](https://shepherd.dev/github/innmind/templating/coverage.svg)](https://shepherd.dev/github/innmind/templating)
 
 Library to wrap php template engines (currently only twig).
 
