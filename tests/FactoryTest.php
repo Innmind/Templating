@@ -14,7 +14,7 @@ class FactoryTest extends TestCase
     {
         $this->assertInstanceOf(
             Twig::class,
-            Factory::build(Path::of('fixtures'))
+            Factory::build(Path::of('fixtures')),
         );
     }
 }

@@ -20,7 +20,7 @@ class TwigTest extends TestCase
     {
         $this->assertInstanceOf(
             Engine::class,
-            new Twig(Path::of('/tmp'))
+            new Twig(Path::of('/tmp')),
         );
     }
 
@@ -32,7 +32,7 @@ class TwigTest extends TestCase
         new Twig(
             Path::of('/tmp'),
             null,
-            Map::of('int', 'object')
+            Map::of('int', 'object'),
         );
     }
 
@@ -44,7 +44,7 @@ class TwigTest extends TestCase
         new Twig(
             Path::of('/tmp'),
             null,
-            Map::of('string', 'mixed')
+            Map::of('string', 'mixed'),
         );
     }
 
@@ -57,7 +57,7 @@ class TwigTest extends TestCase
             Path::of('fixtures'),
             Path::of('/tmp/twig'),
             Map::of('string', 'object')
-                ('helper', $helper)
+                ('helper', $helper),
         );
 
         $stream = $render(new Name('template.html.twig'));
@@ -68,7 +68,7 @@ class TwigTest extends TestCase
         $stream = $render(
             new Name('template.html.twig'),
             Map::of('string', 'mixed')
-                ('name', 'world')
+                ('name', 'world'),
         );
 
         $this->assertSame('Hello world', \trim($stream->toString()));

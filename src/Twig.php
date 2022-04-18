@@ -24,7 +24,7 @@ final class Twig implements Engine
     public function __construct(
         Path $templates,
         Path $cache = null,
-        Map $helpers = null
+        Map $helpers = null,
     ) {
         /** @var Map<string, object> */
         $helpers ??= Map::of('string', 'object');
