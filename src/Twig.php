@@ -5,8 +5,7 @@ namespace Innmind\Templating;
 
 use Innmind\Templating\Exception\FailedToRenderTemplate;
 use Innmind\Url\Path;
-use Innmind\Stream\Readable;
-use Innmind\Stream\Readable\Stream;
+use Innmind\Filesystem\File\Content;
 use Innmind\Immutable\Map;
 use Twig\{
     Environment,
@@ -41,12 +40,12 @@ final class Twig implements Engine
         });
     }
 
-    public function __invoke(Name $template, Map $parameters = null): Readable
+    public function __invoke(Name $template, Map $parameters = null): Content
     {
         $parameters ??= Map::of();
 
         try {
-            return Stream::ofContent(
+            return Content\Lines::ofContent(
                 $this->twig->render(
                     $template->toString(),
                     $parameters->reduce(

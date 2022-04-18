@@ -10,7 +10,7 @@ use Innmind\Templating\{
     Exception\FailedToRenderTemplate,
 };
 use Innmind\Url\Path;
-use Innmind\Stream\Readable;
+use Innmind\Filesystem\File\Content;
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
@@ -35,23 +35,17 @@ class TwigTest extends TestCase
             Map::of(['helper', $helper]),
         );
 
-        $stream = $render(new Name('template.html.twig'));
+        $content = $render(new Name('template.html.twig'));
 
-        $this->assertInstanceOf(Readable::class, $stream);
-        $this->assertSame('Hello default', $stream->toString()->match(
-            static fn($string) => \trim($string),
-            static fn() => null,
-        ));
+        $this->assertInstanceOf(Content::class, $content);
+        $this->assertSame('Hello default', \trim($content->toString()));
 
-        $stream = $render(
+        $content = $render(
             new Name('template.html.twig'),
             Map::of(['name', 'world']),
         );
 
-        $this->assertSame('Hello world', $stream->toString()->match(
-            static fn($string) => \trim($string),
-            static fn() => null,
-        ));
+        $this->assertSame('Hello world', \trim($content->toString()));
     }
 
     public function testThrowWhenFailingToRenderTemplate()
