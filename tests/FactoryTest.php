@@ -3,18 +3,18 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Templating;
 
-use function Innmind\Templating\bootstrap;
+use Innmind\Templating\Factory;
 use Innmind\Templating\Twig;
 use Innmind\Url\Path;
 use PHPUnit\Framework\TestCase;
 
-class BootstrapTest extends TestCase
+class FactoryTest extends TestCase
 {
-    public function testBootstrap()
+    public function testBuild()
     {
         $this->assertInstanceOf(
             Twig::class,
-            bootstrap(Path::of('fixtures'))
+            Factory::build(Path::of('fixtures')),
         );
     }
 }

@@ -10,7 +10,7 @@ use Innmind\Templating\{
     Exception\FailedToRenderTemplate,
 };
 use Innmind\Url\Path;
-use Innmind\Stream\Readable;
+use Innmind\Filesystem\File\Content;
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
@@ -20,31 +20,7 @@ class TwigTest extends TestCase
     {
         $this->assertInstanceOf(
             Engine::class,
-            new Twig(Path::of('/tmp'))
-        );
-    }
-
-    public function testThrowWhenInvalidHelpersKey()
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type Map<string, object>');
-
-        new Twig(
-            Path::of('/tmp'),
-            null,
-            Map::of('int', 'object')
-        );
-    }
-
-    public function testThrowWhenInvalidHelpersValue()
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type Map<string, object>');
-
-        new Twig(
-            Path::of('/tmp'),
-            null,
-            Map::of('string', 'mixed')
+            new Twig(Path::of('/tmp')),
         );
     }
 
@@ -56,42 +32,20 @@ class TwigTest extends TestCase
         $render = new Twig(
             Path::of('fixtures'),
             Path::of('/tmp/twig'),
-            Map::of('string', 'object')
-                ('helper', $helper)
+            Map::of(['helper', $helper]),
         );
 
-        $stream = $render(new Name('template.html.twig'));
+        $content = $render(new Name('template.html.twig'));
 
-        $this->assertInstanceOf(Readable::class, $stream);
-        $this->assertSame('Hello default', \trim($stream->toString()));
+        $this->assertInstanceOf(Content::class, $content);
+        $this->assertSame('Hello default', \trim($content->toString()));
 
-        $stream = $render(
+        $content = $render(
             new Name('template.html.twig'),
-            Map::of('string', 'mixed')
-                ('name', 'world')
+            Map::of(['name', 'world']),
         );
 
-        $this->assertSame('Hello world', \trim($stream->toString()));
-    }
-
-    public function testThrowWhenInvalidParametersKey()
-    {
-        $render = new Twig(Path::of('fixtures'));
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type Map<string, mixed>');
-
-        $render(new Name('template.html.twig'), Map::of('int', 'mixed'));
-    }
-
-    public function testThrowWhenInvalidParametersValue()
-    {
-        $render = new Twig(Path::of('fixtures'));
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type Map<string, mixed>');
-
-        $render(new Name('template.html.twig'), Map::of('string', 'variable'));
+        $this->assertSame('Hello world', \trim($content->toString()));
     }
 
     public function testThrowWhenFailingToRenderTemplate()
