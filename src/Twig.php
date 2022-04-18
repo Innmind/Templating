@@ -8,7 +8,6 @@ use Innmind\Url\Path;
 use Innmind\Stream\Readable;
 use Innmind\Stream\Readable\Stream;
 use Innmind\Immutable\Map;
-use function Innmind\Immutable\assertMap;
 use Twig\{
     Environment,
     Loader\FilesystemLoader,
@@ -27,9 +26,7 @@ final class Twig implements Engine
         Map $helpers = null,
     ) {
         /** @var Map<string, object> */
-        $helpers ??= Map::of('string', 'object');
-
-        assertMap('string', 'object', $helpers, 3);
+        $helpers ??= Map::of();
 
         $this->twig = new Environment(
             new FilesystemLoader($templates->toString()),
@@ -39,16 +36,14 @@ final class Twig implements Engine
                 'strict_variables' => true,
             ],
         );
-        $helpers->foreach(function(string $name, $helper): void {
+        $_ = $helpers->foreach(function(string $name, object $helper): void {
             $this->twig->addGlobal($name, $helper);
         });
     }
 
     public function __invoke(Name $template, Map $parameters = null): Readable
     {
-        $parameters ??= Map::of('string', 'mixed');
-
-        assertMap('string', 'mixed', $parameters, 2);
+        $parameters ??= Map::of();
 
         try {
             return Stream::ofContent(
