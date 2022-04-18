@@ -24,8 +24,7 @@
     "autoload": {
         "psr-4": {
             "Innmind\\Templating\\": "src/"
-        },
-        "files": ["src/bootstrap.php"]
+        }
     },
     "autoload-dev": {
         "psr-4": {
